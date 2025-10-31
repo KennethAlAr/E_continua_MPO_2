@@ -4,7 +4,11 @@ import os
 
 
 def listar_contenido(ruta):
-    contenido = os.listdir(ruta)
+    try:
+        contenido = os.listdir(ruta)
+    except PermissionError:
+        print("No tienes los permisos necesarios para ver esta carpeta.")
+        return
     print(f"{Back.BLUE}Contenido de {os.path.abspath(ruta)}{Style.RESET_ALL}")
     for elemento in contenido:
         if os.path.isdir(ruta + elemento):
@@ -64,26 +68,29 @@ def ir_carpeta_padre(ruta):
     return ruta_padre
 
 def ir_subcarpeta(ruta):
-    print(f"{Back.BLUE}Subdirectorios de {os.path.abspath(ruta)}{Style.RESET_ALL}")
+    print(f"{Back.BLUE}Subdirectorios de {os.path.abspath(ruta)}{Style.RESET_ALL}:")
     carpetas = []
-    for elemento in os.listdir(ruta):
-        if os.path.isdir(ruta+elemento):
-            carpetas.append(elemento)
+    try:
+        for elemento in os.listdir(ruta):
+            if os.path.isdir(ruta+elemento):
+                carpetas.append(elemento)
+    except PermissionError:
+        print("No tienes los permisos necesarios para ver esta carpeta.")
     while True:
         if len(carpetas) == 0:
-            print("No hay subdirectorios en la carpeta actual")
+            print("No hay subdirectorios en la carpeta actual.")
             return ruta
         else:
             ver_carpetas(ruta)
             try:
                 opcion = int(input("Introduce el número de la carpeta a la que quieres ir:\n"))
             except ValueError:
-                print("Por favor, introduce un número válido")
+                print("Por favor, introduce un número válido.")
             try:
                 anadir_comando_historial(f"Cambiado directorio a {ruta + carpetas[opcion-1] + os.sep}")
                 return ruta + carpetas[opcion-1] + os.sep
             except IndexError:
-                print("Por favor, introduce un número válido")
+                print("Por favor, introduce un número válido.")
 
 
 def mostrar_ruta(ruta):
