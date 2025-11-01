@@ -1,13 +1,12 @@
 from funcionalidades.comandos import *
 import os
 
-ruta = os.getcwd() + os.sep
+ruta_log = os.path.abspath("historial/historial_de_comandos.txt")
 
-def menu_principal(ruta):
-    ruta_actual = ruta
+def menu_principal():
     opcion = ""
     while opcion != 0:
-        print(mostrar_ruta(ruta_actual))
+        print(f"{Back.BLUE}Ruta actual: {os.getcwd()}{Style.RESET_ALL}")
         print('''Selecciona una opción:
             1. Listar contenido del directorio actual
             2. Crear un nuevo directorio
@@ -23,11 +22,11 @@ def menu_principal(ruta):
         try:
             opcion = int(input())
         except ValueError:
-            print("Por favor, introduce una de las opciones indicadas en el menú.\n")
+            pass # Aunque salga el error, el match recogerá la opción default.
 
         match opcion:
             case 1:
-                listar_contenido(ruta_actual)
+                listar_contenido(ruta_log)
             case 2:
                 crear_directorio()
             case 3:
@@ -39,10 +38,12 @@ def menu_principal(ruta):
             case 6:
                 renombrar_elemento()
             case 7:
-                ver_historial()
+                ver_historial(ruta_log)
             case 8:
-                ruta_actual = ir_carpeta_padre(ruta_actual)
+                ir_carpeta_padre(ruta_log)
             case 9:
-                ruta_actual = ir_subcarpeta(ruta_actual)
+                ir_subcarpeta(ruta_log)
+            case _:
+                print("Por favor, introduce una de las opciones indicadas en el menú.")
 
-menu_principal(ruta)
+menu_principal()

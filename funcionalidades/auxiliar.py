@@ -1,6 +1,6 @@
 import os
 import datetime
-from colorama import Fore, Style
+from colorama import Fore, Back, Style
     
 def formatear_fecha(fecha):
     fecha_datetime = datetime.datetime.fromtimestamp(fecha)
@@ -23,24 +23,26 @@ def formatear_tamano(tamano):
 def ver_fecha(ruta):
     try:
         return formatear_fecha(os.path.getmtime(ruta))
-    except PermissionError:
+        #Por lo que he podido probar en linux hay una especie de acceso directo que el programa reconoce como archivos pero no lo son. Estos enlaces apuntan a otro archivo.
+        #os.path.getsize()/getmtime()/listdir() no lo pueden leer y salta un error (FileNotFoundError, NotADirectoryError o PermissionError)
+        #Los encapsulamos todos y si saltan devolvemos un mensaje de acceso denegado (en el caso de calcular tamaño de carpeta, no devolvemos nada a la suma).
+    except Exception:
         return "[Acceso denegado]"
 
 def ver_tamano(ruta):
     try:
         return formatear_tamano(os.path.getsize(ruta))
-    except PermissionError:
+    except Exception:
         return "[Acceso denegado]"
     
 def ver_numero_elementos(ruta):
     try:
         return f"{len(os.listdir(ruta))} elementos dentro"
-    except PermissionError:
+    except Exception:
         return "[Acceso denegado]"
 
 def ver_tamano_carpeta(ruta_carpeta):
     total = 0
-
     #Al principio tenía un try/except para esta función, pero os.walk() no eleva un error si encuentra una carpeta a la que no puede entrar o un archivo roto.
     #Simplemente no cuenta ese archivo o carpeta y ya está.
     for ruta, subcarpetas, archivos in os.walk(ruta_carpeta):
@@ -49,18 +51,46 @@ def ver_tamano_carpeta(ruta_carpeta):
         for archivo in archivos:
             #Con el segundo for recorremos todos los archivos de la carpeta original y de las subsiguientes subcarpetas
             ruta_archivo = os.path.join(ruta, archivo)
-            total += os.path.getsize(ruta_archivo)
+            try:
+                total += os.path.getsize(ruta_archivo)
+            except Exception:
+                pass
 
     return formatear_tamano(total)
 
-def ver_carpetas(ruta):
+def ver_carpetas():
     carpetas = []
-    for elemento in os.listdir(ruta):
-        if os.path.isdir(ruta+elemento):
-            carpetas.append(elemento)
+    try:
+        for elemento in os.listdir(os.getcwd()):
+            if os.path.isdir(elemento):
+                carpetas.append(elemento)
+    except PermissionError:
+        pass # Si no tenemos permisos para ver una carpeta no la lista
     for i in range(len(carpetas)):
         print(f"{Fore.YELLOW}    {i+1}.-📁 {carpetas[i]}{Style.RESET_ALL}")
 
-def anadir_comando_historial(mensaje):
-    with open("historial/historial_de_comandos.txt", "a") as log:
+def anadir_comando_historial(ruta, mensaje):
+    with open(ruta, "a", encoding='utf-8') as log:
         log.write(f"{datetime.datetime.now().isoformat(timespec="seconds")} - {mensaje}\n")
+
+def cambiar_unidades_windows():
+    unidades = []
+    for letra in ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]:
+        unidad = f"{letra}:\\"
+        if os.path.exists(unidad):
+            unidades.append(unidad)
+    for i in range(len(unidades)):
+        print(f"{Back.BLUE}    {i+1}.-💾 {unidades[i]}{Style.RESET_ALL}")
+    print("Introduce el número de la unidad a la que quieres ir:")
+    while True:
+        try:
+            opcion = int(input())
+            try:
+                os.chdir(unidades[opcion-1])
+                return
+            except IndexError:
+                print("Por favor, introduce una opción válida.")
+            except PermissionError:
+                print("No tienes los permisos para acceder a esta unidad.")
+        except ValueError:
+            print("Por favor, introduce una opción válida.")
