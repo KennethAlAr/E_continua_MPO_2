@@ -29,9 +29,15 @@ def listar_contenido(ruta_log):
     print()
     anadir_comando_historial(ruta_log, f"Listado contenido de {ruta}")
 
-def crear_directorio():
-    # Crea una nueva carpeta
-    pass
+def crear_directorio(ruta_log):
+    nombre = input("Escribe el nombre de la nueva carpeta que quieres crear:")
+    if os.path.isdir(os.path.join(os.getcwd(), nombre)):
+        print("Ya existe un directorio con ese nombre")
+        anadir_comando_historial(ruta_log, f"Intento fallido de crear directorio {os.path.join(os.getcwd(), nombre)}, el directorio ya existe")
+        return
+    os.mkdir(os.path.join(os.getcwd(), nombre))
+    print(f"Creado directorio '{nombre}' en {os.getcwd()}")
+    anadir_comando_historial(ruta_log, f"creado directorio {os.path.join(os.getcwd(), nombre)}")
 
 def crear_archivo():
     # Crea un archivo de texto y permite escribir en él

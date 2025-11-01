@@ -2,6 +2,9 @@ from funcionalidades.comandos import *
 import os
 
 ruta_log = os.path.abspath("historial/historial_de_comandos.txt")
+#Cada vez que corre el código se borra el historial para que no acabe pesando demasiado, pero las líneas 6 y 7 podrían borrarse para mantenerlo activo.
+with open(ruta_log, "w"):
+    pass
 
 def menu_principal():
     opcion = ""
@@ -28,7 +31,7 @@ def menu_principal():
             case 1:
                 listar_contenido(ruta_log)
             case 2:
-                crear_directorio()
+                crear_directorio(ruta_log)
             case 3:
                 crear_archivo()
             case 4:
@@ -47,3 +50,5 @@ def menu_principal():
                 print("Por favor, introduce una de las opciones indicadas en el menú.")
 
 menu_principal()
+
+#Mostrar información de archivo ya se ve en listar información
