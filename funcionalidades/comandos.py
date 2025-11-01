@@ -30,30 +30,111 @@ def listar_contenido(ruta_log):
     anadir_comando_historial(ruta_log, f"Listado contenido de {ruta}")
 
 def crear_directorio(ruta_log):
-    nombre = input("Escribe el nombre de la nueva carpeta que quieres crear:")
-    if os.path.isdir(os.path.join(os.getcwd(), nombre)):
-        print("Ya existe un directorio con ese nombre")
-        anadir_comando_historial(ruta_log, f"Intento fallido de crear directorio {os.path.join(os.getcwd(), nombre)}, el directorio ya existe")
+    nombre = input("Escribe el nombre de la nueva carpeta que quieres crear:\n")
+    try:
+        if os.path.exists(os.path.join(os.getcwd(), nombre)):
+            if os.path.isdir(os.path.join(os.getcwd(), nombre)):
+                print("Ya existe un directorio con ese nombre")
+                return
+            else:
+                print("Ya existe un archivo con ese nombre")
+                return
+        os.mkdir(os.path.join(os.getcwd(), nombre))
+        print(f"Creado directorio '{nombre}' en {os.getcwd()}")
+        anadir_comando_historial(ruta_log, f"creado directorio {os.path.join(os.getcwd(), nombre)}")
+    except PermissionError:
+        print("No tienes los permisos para crear un directorio en esta carpeta.")
         return
-    os.mkdir(os.path.join(os.getcwd(), nombre))
-    print(f"Creado directorio '{nombre}' en {os.getcwd()}")
-    anadir_comando_historial(ruta_log, f"creado directorio {os.path.join(os.getcwd(), nombre)}")
+    except Exception:
+        print("Nombre de carpeta no válido.")
 
-def crear_archivo():
-    # Crea un archivo de texto y permite escribir en él
-    pass
 
-def escribir_en_archivo():
-    # Abre un archivo existente y añade texto al final
-    pass
+def crear_archivo(ruta_log):
+    nombre = input("Escribe el nombre del nuevo archivo de texto que quieres crear:\n")
+    try:
+        if os.path.exists(os.path.join(os.getcwd(), nombre + ".txt")):
+            print("El archivo que quieres crear ya existe.")
+            return
+        with open(os.path.join(os.getcwd(), nombre + ".txt"), "w", encoding="utf-8") as archivo:
+            print('''¿Quieres escribir algo en el archivo?
+    1- Sí
+    2- No''')
+            while True:
+                try:
+                    opcion = int(input())
+                except ValueError:
+                    pass
+                match(opcion):
+                    case 1:
+                        lineas = []
+                        while True:                            
+                            linea = input("Escribe el texto que quieres o pulsa 'Enter' sin nada escrito para terminar:\n")
+                            if linea == "":
+                                break
+                            lineas.append(linea + "\n")
+                        archivo.writelines(lineas)
+                        print(f"Creado archivo {nombre}.txt")
+                        anadir_comando_historial(ruta_log, f"creado archivo {nombre + ".txt"} en directorio {os.getcwd()}")
+                        return
+                    case 2:
+                        print(f"Creado archivo {nombre}.txt")
+                        anadir_comando_historial(ruta_log, f"Creado archivo {nombre + ".txt"} en directorio {os.getcwd()}")
+                        return
+    except PermissionError:
+        print("No tienes los permisos para crear un directorio en esta carpeta.")
+        return
+    except Exception:
+        print("Nombre de carpeta no válido.")
+
+def escribir_en_archivo(ruta_log):
+    nombre = input("Escribe el nombre del archivo en el que quieres escribir:\n")
+    try:
+        if not os.path.exists(os.path.join(os.getcwd(), nombre)):
+            print("El archivo no existe.\n")
+            return
+        with open (os.path.join(os.getcwd(), nombre), "a") as archivo:
+            lineas = []
+            while True:                            
+                linea = input("Escribe el texto que quieres o pulsa 'Enter' sin nada escrito para terminar:\n")
+                if linea == "":
+                    break
+                lineas.append(linea + "\n")
+            archivo.writelines(lineas)
+            print(f"Escrito en archivo {nombre}\n")
+            anadir_comando_historial(ruta_log, f"Escrito en archivo {nombre} en directorio {os.getcwd()}")
+            return
+    except PermissionError:
+        print(f"No tienes los permisos para escribir en {nombre}.")
+        return
 
 def eliminar_elemento():
     # Elimina un archivo o carpeta
     pass
 
-def renombrar_elemento():
-    # Renombra un archivo o carpeta
-    pass
+def renombrar_elemento(ruta_log):
+    nombre = input("Escribe el nombre del archivo o directorio que quieres renombrar:\n")
+    nuevo_nombre = input(f"Escribe el nuevo nombre para '{nombre}':\n")
+    try:
+        os.rename(nombre, nuevo_nombre)
+        if os.path.isdir(nuevo_nombre):
+            print(f"Directorio '{nombre}' renombrado a '{nuevo_nombre}'.\n")
+            anadir_comando_historial(ruta_log, f"Directorio {nombre} renombrado a '{nuevo_nombre}' en directorio {os.getcwd()}")
+        else:
+            print(f"Archivo '{nombre}' renombrado a '{nuevo_nombre}'.\n")
+            anadir_comando_historial(ruta_log, f"Archivo '{nombre}' renombrado a '{nuevo_nombre}' en directorio {os.getcwd()}")
+    except FileNotFoundError:
+        print(f"El archivo o directorio '{nombre}' no existe.\n")
+    except FileExistsError:
+        if os.path.isdir(nuevo_nombre):
+            print(f"Ya existe un directorio llamado '{nuevo_nombre}'.")
+        else:            
+            print(f"Ya existe un archivo llamado '{nuevo_nombre}'.")
+        return
+    except OSError:
+        if os.path.isdir(nombre):
+            print(f"No tienes los permisos para renombrar el directorio '{nombre}' o el directorio está en uso.")
+        else:            
+            print(f"No tienes los permisos para renombrar el archivo '{nombre}' o el archivo está en uso.")
 
 def ver_historial(ruta_log):
     with open(ruta_log, "r", encoding='utf-8') as log:

@@ -33,13 +33,13 @@ def menu_principal():
             case 2:
                 crear_directorio(ruta_log)
             case 3:
-                crear_archivo()
+                crear_archivo(ruta_log)
             case 4:
-                escribir_en_archivo()
+                escribir_en_archivo(ruta_log)
             case 5:
                 eliminar_elemento()
             case 6:
-                renombrar_elemento()
+                renombrar_elemento(ruta_log)
             case 7:
                 ver_historial(ruta_log)
             case 8:
