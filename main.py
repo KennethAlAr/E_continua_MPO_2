@@ -1,5 +1,6 @@
 from funcionalidades.comandos import *
 import os
+from colorama import Back, Style
 
 ruta_log = os.path.abspath("historial/historial_de_comandos.txt")
 #Cada vez que corre el código se borra el historial para que no acabe pesando demasiado, pero las líneas 6 y 7 podrían borrarse para mantenerlo activo.
@@ -25,7 +26,8 @@ def menu_principal():
         try:
             opcion = int(input())
         except ValueError:
-            pass # Aunque salga el error, el match recogerá la opción default.
+            print("Por favor, introduce una de las opciones indicadas en el menú.")
+            continue
 
         match opcion:
             case 1:
@@ -37,7 +39,7 @@ def menu_principal():
             case 4:
                 escribir_en_archivo(ruta_log)
             case 5:
-                eliminar_elemento()
+                eliminar_elemento(ruta_log)
             case 6:
                 renombrar_elemento(ruta_log)
             case 7:
@@ -48,6 +50,7 @@ def menu_principal():
                 ir_subcarpeta(ruta_log)
             case _:
                 print("Por favor, introduce una de las opciones indicadas en el menú.")
+            #Intentar implementar mover_archivo()
 
 menu_principal()
 

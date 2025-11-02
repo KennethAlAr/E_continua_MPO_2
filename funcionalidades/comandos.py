@@ -50,7 +50,7 @@ def crear_directorio(ruta_log):
 
 
 def crear_archivo(ruta_log):
-    nombre = input("Escribe el nombre del nuevo archivo de texto que quieres crear:\n")
+    nombre = input("Escribe el nombre del nuevo archivo de texto que quieres crear (No hace falta poner la extensión):\n")
     try:
         if os.path.exists(os.path.join(os.getcwd(), nombre + ".txt")):
             print("El archivo que quieres crear ya existe.")
@@ -63,7 +63,8 @@ def crear_archivo(ruta_log):
                 try:
                     opcion = int(input())
                 except ValueError:
-                    pass
+                    print("Por favor, introduce una opción válida")
+                    continue
                 match(opcion):
                     case 1:
                         lineas = []
@@ -80,6 +81,8 @@ def crear_archivo(ruta_log):
                         print(f"Creado archivo {nombre}.txt")
                         anadir_comando_historial(ruta_log, f"Creado archivo {nombre + ".txt"} en directorio {os.getcwd()}")
                         return
+                    case _:
+                        print("Por favor, introduce una opción válida")
     except PermissionError:
         print("No tienes los permisos para crear un directorio en esta carpeta.")
         return
@@ -107,9 +110,57 @@ def escribir_en_archivo(ruta_log):
         print(f"No tienes los permisos para escribir en {nombre}.")
         return
 
-def eliminar_elemento():
-    # Elimina un archivo o carpeta
-    pass
+def eliminar_elemento(ruta_log):
+    nombre = input("Escribe el nombre del archivo o directorio que quieres eliminar:\n")
+    if not os.path.exists(os.path.join(os.getcwd(), nombre)):
+        print("El archivo o directorio no existe.")
+        return
+    if os.path.isdir(nombre):
+        while True:
+            try:
+                opcion = int(input(f'''Se va a eliminar el directorio {nombre}, ¿Estás seguro?
+    1-Sí
+    2-No'''))
+                match opcion:
+                    case 1:
+                        os.rmdir(nombre)
+                        print(f"Eliminado directorio {nombre}.")
+                        anadir_comando_historial(ruta_log, f"Eliminado directorio '{nombre}' en directorio {os.getcwd()}")
+                        return
+                    case 2:
+                        print(f"Eliminación de {nombre} cancelada.")
+                        return
+                    case _:
+                        print("Por favor, introduce una opción válida.")
+            except ValueError:
+                print("Por favor, introduce una opción válida.")
+            except PermissionError:
+                print(f"No tienes los permisos para eliminar {nombre}.")
+                return
+            except OSError:
+                print(f"El directorio {nombre} debe estar vacío para poder eliminarlo.")
+                return
+    while True:
+        try:
+            opcion = int(input(f'''Se va a eliminar el archivo {nombre}, ¿Estás seguro?
+    1-Sí
+    2-No'''))
+            match opcion:
+                case 1:
+                    os.remove(nombre)
+                    print(f"Eliminado archivo {nombre}.")
+                    anadir_comando_historial(ruta_log, f"Eliminado archivo '{nombre}' en directorio {os.getcwd()}")
+                    return
+                case 2:
+                    print(f"Eliminación de {nombre} cancelada.")
+                    return
+                case _:
+                    print("Por favor, introduce una opción válida.")
+        except ValueError:
+            print("Por favor, introduce una opción válida.")
+        except PermissionError:
+            print(f"No tienes los permisos para eliminar {nombre}.")
+            return
 
 def renombrar_elemento(ruta_log):
     nombre = input("Escribe el nombre del archivo o directorio que quieres renombrar:\n")
