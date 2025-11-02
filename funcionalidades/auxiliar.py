@@ -79,10 +79,11 @@ def cambiar_unidades_windows():
         unidad = f"{letra}:\\"
         if os.path.exists(unidad):
             unidades.append(unidad)
-    for i in range(len(unidades)):
-        print(f"{Back.BLUE}    {i+1}.-💾 {unidades[i]}{Style.RESET_ALL}")
-    print("Introduce el número de la unidad a la que quieres ir:")
+    
     while True:
+        for i in range(len(unidades)):
+            print(f"{Back.BLUE}    {i+1}.-💾 {unidades[i]}{Style.RESET_ALL}")
+        print("Introduce el número de la unidad a la que quieres ir:")
         try:
             opcion = int(input())
             try:

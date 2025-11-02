@@ -27,7 +27,7 @@ def menu_principal():
         try:
             opcion = int(input())
         except ValueError:
-            print("Por favor, introduce una de las opciones indicadas en el menú.")
+            print("Por favor, introduce una de las opciones indicadas en el menú.\n")
             continue
 
         match opcion:
@@ -52,6 +52,6 @@ def menu_principal():
             case 0:
                 print("Saliendo del gestor de directorios.")
             case _:
-                print("Por favor, introduce una de las opciones indicadas en el menú.")
+                print("Por favor, introduce una de las opciones indicadas en el menú.\n")
 
 menu_principal()
