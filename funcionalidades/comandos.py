@@ -11,21 +11,22 @@ def listar_contenido(ruta_log):
         print("No tienes los permisos necesarios para ver esta carpeta.")
         return
     print(f"{Back.BLUE}Contenido de {ruta}{Style.RESET_ALL}")
+    print(f"{Back.BLUE} {contar_carpetas()} - {contar_archivos()} - Ultima modificación: {ver_fecha(os.getcwd())}{Style.RESET_ALL}")
     for elemento in contenido:
         if os.path.isdir(elemento):
-            print(f"{Fore.YELLOW}    -📁 {elemento} - {ver_fecha(elemento)} - {ver_tamano_carpeta(elemento)} - {ver_numero_elementos(elemento)}{Style.RESET_ALL}")
+            print(f"{Fore.YELLOW}    -📁 {elemento} - Ultima modificación: {ver_fecha(elemento)} - {ver_tamano_carpeta(elemento)} - {ver_numero_elementos(elemento)}{Style.RESET_ALL}")
         elif elemento.split(".")[-1] in ["txt", "docx", "doc", "odt", "rtf"]:
-            print(f"{Fore.BLUE}    -📃 {elemento} - {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
+            print(f"{Fore.BLUE}    -📃 {elemento} - Ultima modificación: {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
         elif elemento.split(".")[-1] in ["jpg", "jpeg","png", "gif", "svg", "webp", "tiff", "tif", "bmp", "heic", "heif"]:
-            print(f"{Fore.RED}    -📷 {elemento} - {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
+            print(f"{Fore.RED}    -📷 {elemento} - Ultima modificación: {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
         elif elemento.split(".")[-1] in ["mp3", "wma", "wav", "aac", "flac"]:
-            print(f"{Fore.MAGENTA}    -🎵 {elemento} - {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
+            print(f"{Fore.MAGENTA}    -🎵 {elemento} - Ultima modificación: {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
         elif elemento.split(".")[-1] in ["mp4", "wmv", "mov", "avi", "mkv", "webm"]:
-            print(f"{Fore.CYAN}    -📽️ {elemento} - {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
+            print(f"{Fore.CYAN}    -📽️ {elemento} - Ultima modificación: {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
         elif elemento.split(".")[-1] in ["py", "java", "html", "css", "js"]:
-            print(f"{Fore.GREEN}    -🤖 {elemento} - {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
+            print(f"{Fore.GREEN}    -🤖 {elemento} - Ultima modificación: {ver_fecha(elemento)} - {ver_tamano(elemento)}{Style.RESET_ALL}")
         else:
-            print(f"{Fore.WHITE}    -❓ {elemento} - {ver_fecha(elemento)} - {ver_tamano(elemento)} {Style.RESET_ALL}")
+            print(f"{Fore.WHITE}    -❓ {elemento} - Ultima modificación: {ver_fecha(elemento)} - {ver_tamano(elemento)} {Style.RESET_ALL}")
     print()
     anadir_comando_historial(ruta_log, f"Listado contenido de {ruta}")
 
@@ -245,4 +246,7 @@ def ir_subcarpeta(ruta_log):
                 return
             except Exception:
                 print("Por favor, introduce un número válido.")
+
+def mover_archivo(ruta_log):
+    pass
             

@@ -3,7 +3,8 @@ import os
 from colorama import Back, Style
 
 ruta_log = os.path.abspath("historial/historial_de_comandos.txt")
-#Cada vez que corre el código se borra el historial para que no acabe pesando demasiado, pero las líneas 6 y 7 podrían borrarse para mantenerlo activo.
+
+#Cada vez que corre el código se borra el historial para que no acabe pesando demasiado, pero las líneas 8 y 9 podrían borrarse para mantenerlo activo.
 with open(ruta_log, "w"):
     pass
 
@@ -48,10 +49,9 @@ def menu_principal():
                 ir_carpeta_padre(ruta_log)
             case 9:
                 ir_subcarpeta(ruta_log)
+            case 0:
+                print("Saliendo del gestor de directorios.")
             case _:
                 print("Por favor, introduce una de las opciones indicadas en el menú.")
-            #Intentar implementar mover_archivo()
 
 menu_principal()
-
-#Mostrar información de archivo ya se ve en listar información

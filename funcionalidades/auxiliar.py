@@ -71,7 +71,7 @@ def ver_carpetas():
 
 def anadir_comando_historial(ruta, mensaje):
     with open(ruta, "a", encoding='utf-8') as log:
-        log.write(f"{datetime.datetime.now().isoformat(timespec="seconds")} - {mensaje}\n")
+        log.write(f"{datetime.datetime.now().strftime("%Y-%m-%d - %H:%M:%S")} - {mensaje}\n")
 
 def cambiar_unidades_windows():
     unidades = []
@@ -94,3 +94,28 @@ def cambiar_unidades_windows():
                 print("No tienes los permisos para acceder a esta unidad.")
         except ValueError:
             print("Por favor, introduce una opción válida.")
+
+def contar_carpetas():
+    contador = 0
+    try:
+        for elemento in os.listdir(os.getcwd()):
+            if os.path.isdir(elemento):
+                contador += 1
+        return f"{contador} carpetas"
+    except PermissionError:
+        return "[Acceso denegado]"
+
+def contar_archivos():
+    contador = 0
+    total = 0
+    try:
+        for elemento in os.listdir(os.getcwd()):
+            if not os.path.isdir(elemento):
+                contador += 1
+                try:
+                    total += os.path.getsize(elemento)
+                except Exception:
+                    pass
+        return f"{contador} archivos ({formatear_tamano(total)})"
+    except PermissionError:
+        return "[Acceso denegado]"

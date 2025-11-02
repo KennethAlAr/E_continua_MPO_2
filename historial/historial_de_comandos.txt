@@ -1,2 +1,0 @@
-2025-11-02T13:47:50 - Creado archivo lolete.txt.txt en directorio C:\Users\User\Documents\KENNETH\FP DAM\Curso 2025\06_Módulo profesional optativo\MPO_continua2
-2025-11-02T13:48:27 - Eliminado archivo 'lolete.txt.txt' en directorio C:\Users\User\Documents\KENNETH\FP DAM\Curso 2025\06_Módulo profesional optativo\MPO_continua2
